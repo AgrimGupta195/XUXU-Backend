@@ -29,7 +29,7 @@ const getFeaturedProduct = async (req, res) => {
 }
 const createProduct = async(req,res)=>{
     try {
-        const{name,description,image,price,isFeatured,category}=req.body;
+        const{name,description,image,price,category}=req.body;
 
         let cloudinaryResponse = null;
         if(image){
@@ -38,7 +38,6 @@ const createProduct = async(req,res)=>{
         const product = new Product({
             name,
             description,
-            isFeatured,
             image:cloudinaryResponse?.secure_url ? cloudinaryResponse?.secure_url :"",
             category,
             price
@@ -95,4 +94,38 @@ const getRecommendedProduct = async(req,res)=>{
 		res.status(500).json({ message: "Server error", error: error.message });
 	}
 }
-module.exports = {getAllProducts,getFeaturedProduct,createProduct,deleteProduct,getRecommendedProduct};
+
+const getProductsByCategory = async(req,res)=>{
+    const {category} = req.params;
+    try {
+        const product = await Product.find({category});
+        return res.status(201).json(product);
+    } catch (error) {
+        return res.status(500).json({ message: "Server error", error: error.message });
+    }
+}
+const toggleIsFeatured = async(req,res)=>{
+    try {
+        const product = await Product.findById(req.params.id);
+        if(product){
+            product.isFeatured=!product.isFeatured;
+            const updateProduct = await product.save();
+        await updateFeaturedProductsCache();
+        res.json(updateProduct);
+        }else{
+            return res.status(404).json({message:"Product Not found"})
+        }
+    } catch (error) {
+        return res.status(500).json({ message: "Server error", error: error.message });
+    }
+}
+
+async function updateFeaturedProductsCache(){
+    try {
+        const featuredProduct = await Product.find({isFeatured:true}).lean();
+        await redis.set("featured_products",JSON.stringify(featuredProduct));
+    } catch (error) {
+        return res.status(500).json({ message: "Server error", error: error.message });
+    }
+}
+module.exports = {getAllProducts,getFeaturedProduct,createProduct,deleteProduct,getRecommendedProduct,toggleIsFeatured};
