@@ -1,18 +1,19 @@
-﻿# XUXU-Backend
+# XUXU Backend
 
-A simple and efficient **eCommerce backend** built with **Node.js, Express, MongoDB, and Redis**. This backend supports **user authentication, email verification via OTP, JWT-based security, and product management**.
+A simple eCommerce backend built with **Node.js, Express, MongoDB, and Redis** that supports user email verification via OTP.
 
 ## 🚀 Features
-
-- **User Authentication**: Register, login, logout, refresh token, and profile retrieval.
-- **OTP Verification**: Secure email verification using OTP sent via Gmail.
-- **JWT-Based Security**: Protects routes using JSON Web Tokens (JWT).
-- **Redis Integration**: Stores refresh tokens securely for session management.
-- **Product Management**: Full CRUD operations for products.
-- **Modular Code Structure**: Well-organized folders for scalability and maintainability.
+- **User Authentication**: Registration, login, logout, token refresh, and profile retrieval.
+- **OTP Verification**: Secure email verification using OTP.
+- **JWT-Based Security**: Protects routes using JSON Web Tokens.
+- **Redis Integration**: Securely stores refresh tokens.
+- **Product Management**: CRUD operations for products.
+- **Cart Management**: Add, update, and remove products.
+- **Coupon Management**: Validate and apply discount coupons.
+- **Analytics**: Retrieve sales and user analytics.
+- **Modular Structure**: Organized controllers, routes, models, middlewares, and services.
 
 ## 📂 Project Structure
-
 ```
 XUXU-Backend/
 ├── .env
@@ -20,91 +21,100 @@ XUXU-Backend/
 ├── package.json
 ├── README.md
 ├── server.js
-│
 ├── controllers/
 │   ├── authController.js
-│   └── productController.js
-│
+│   ├── productController.js
+│   ├── cartController.js
+│   ├── couponController.js
+│   └── analyticController.js
 ├── lib/
 │   ├── cloudinary.js
 │   ├── db.js
 │   └── redis.js
-│
 ├── middlewares/
 │   └── authMiddleware.js
-│
 ├── models/
 │   ├── productModel.js
-│   └── userModel.js
-│
+│   ├── userModel.js
+│   ├── couponModel.js
+│   └── orderModel.js
 ├── routes/
 │   ├── authRoutes.js
-│   └── productRoutes.js
-│
+│   ├── productRoutes.js
+│   ├── cartRoutes.js
+│   ├── couponRoutes.js
+│   ├── paymentRoutes.js
+│   └── analyticRoutes.js
 └── services/
     └── otpVerification.js
 ```
 
-## 🛠 Installation & Setup
-
-### 1️⃣ Clone the repository
-```sh
-$ git clone https://github.com/AgrimGupta195/XUXU-Backend.git
-```
-
-### 2️⃣ Install dependencies
-```sh
-$ npm install
-```
-
-### 3️⃣ Create a `.env` file and configure your environment variables:
-```env
-PORT=4000
-MONGO_URL=your_mongodb_connection_string
-GMAIL_USER=your_gmail_user
-GMAIL_PASSWORD=your_gmail_password
-REDIS_URL=your_redis_connection_string
-ACCESS_TOKEN_SECRET=your_access_token_secret
-REFRESH_TOKEN_SECRET=your_refresh_token_secret
-CLOUDINARY_NAME=your_cloudinary_name
-CLOUDINARY_KEY=your_cloudinary_key
-CLOUDINARY_SECRET=your_cloudinary_secret
-```
-
 ## 🔗 API Endpoints
 
-### 🛡️ Authentication Routes
-
-| Method | Endpoint                | Description                     |
-|--------|-------------------------|---------------------------------|
-| POST   | `/api/auth/register`    | Register a new user             |
-| POST   | `/api/auth/verifyOtp`   | Verify OTP for email validation |
-| POST   | `/api/auth/resendOtp`   | Resend OTP                      |
-| POST   | `/api/auth/login`       | User login                      |
-| POST   | `/api/auth/logout`      | User logout                     |
-| POST   | `/api/auth/refreshToken` | Refresh JWT token               |
-| GET    | `/api/auth/getProfile`  | Get user profile (protected)     |
+### 🔑 Authentication Routes
+- **Register User**: `POST /api/auth/register`
+- **Verify OTP**: `POST /api/auth/verifyOtp`
+- **Resend OTP**: `POST /api/auth/resendOtp`
+- **Login**: `POST /api/auth/login`
+- **Logout**: `POST /api/auth/logout`
+- **Refresh Token**: `POST /api/auth/refreshToken`
+- **Get Profile**: `GET /api/auth/getProfile` (Protected)
 
 ### 🛍️ Product Routes
+- **Create Product**: `POST /api/products` (Protected)
+- **Get All Products**: `GET /api/products`
+- **Get Product by ID**: `GET /api/products/:id`
+- **Update Product**: `PUT /api/products/:id` (Protected)
+- **Delete Product**: `DELETE /api/products/:id` (Protected)
+- **Get Featured Products**: `GET /api/products/featured`
+- **Get Recommended Products**: `GET /api/products/recommendations`
+- **Get Products by Category**: `GET /api/products/category/:category`
+- **Toggle Product Featured Status**: `PATCH /api/products/:id` (Protected)
 
-| Method | Endpoint                 | Description                     |
-|--------|--------------------------|---------------------------------|
-| POST   | `/api/products/`          | Create a new product (protected) |
-| GET    | `/api/products/`          | Get all products                |
-| GET    | `/api/products/:id`      | Get product by ID               |
-| PUT    | `/api/products/:id`      | Update a product (protected)    |
-| DELETE | `/api/products/:id`      | Delete a product (protected)    |
+### 🛒 Cart Routes
+- **Get Cart Products**: `GET /api/cart` (Protected)
+- **Add to Cart**: `POST /api/cart` (Protected)
+- **Remove All from Cart**: `DELETE /api/cart` (Protected)
+- **Update Cart Quantity**: `PUT /api/cart/:id` (Protected)
 
-⚠️ **Protected routes** require authentication and use the middleware from `authMiddleware.js`.
+### 🎟️ Coupon Routes
+- **Get Coupon**: `GET /api/coupons` (Protected)
+- **Validate Coupon**: `POST /api/coupons/validate` (Protected)
 
-## 🛠 Technologies Used
+### 📊 Analytics Routes
+- **Get Analytics Data**: `GET /api/analytics` (Protected, Admin)
 
-- **Node.js** - Backend runtime
-- **Express.js** - Web framework
-- **MongoDB & Mongoose** - Database & ORM
-- **Redis** - Token storage
-- **JWT (JSON Web Token)** - Authentication
-- **Cloudinary** - Image storage
-- **Nodemailer** - Email sending
+⚠️ **Protected routes** are secured using the middleware defined in `authMiddleware.js`.
 
-### ⭐ Don't forget to **star** this repository if you found it useful! ⭐
+## 🛠️ Installation & Setup
+```sh
+# Clone the repository
+git clone https://github.com/yourusername/xuxu-backend.git
+cd xuxu-backend
+
+# Install dependencies
+npm install
+
+# Configure environment variables
+cp .env.example .env
+nano .env   # Update variables
+
+# Start the server
+npm start
+```
+
+## 🔧 Environment Variables
+Create a `.env` file and configure the following:
+```env
+PORT=4000
+MONGO_URL="your_mongodb_connection_string"
+GMAIL_PASSWORD="your_gmail_password"
+GMAIL_USER="your_gmail_user"
+REDIS_URL="your_redis_connection_string"
+ACCESS_TOKEN_SECRET="your_access_token_secret"
+REFRESH_TOKEN_SECRET="your_refresh_token_secret"
+CLOUDINARY_SECRET="your_cloudinary_secret"
+CLOUDINARY_KEY="your_cloudinary_key"
+CLOUDINARY_NAME="your_cloudinary_name"
+```
+
