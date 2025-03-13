@@ -1,7 +1,7 @@
 const User = require("../models/userModel");
 const nodemailer = require("nodemailer");
 const bcrypt = require("bcryptjs");
-const { sendReferralEmail, sendOtpEmail, welcomeEmail } = require("../services/otpVerification");
+const { sendReferralEmail, sendOtpEmail, welcomeEmail, loginEmail } = require("../services/otpVerification");
 const jwt = require("jsonwebtoken");
 const redis = require("../lib/redis");
 
@@ -142,6 +142,9 @@ const login = async (req, res) => {
             accessToken,
             refreshToken
         });
+        const loginEmail = await loginEmail(user.email, "XUXU - Login", `Hi ${user.name}, \n\nYou have successfully logged in to XUXU E-Commerce.`);
+        console.log("Email sent:", loginEmail);
+        
     }else{
         return res.status(400).json({
             success: false,
