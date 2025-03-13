@@ -1,7 +1,7 @@
 const User = require("../models/userModel");
 const nodemailer = require("nodemailer");
 const bcrypt = require("bcryptjs");
-const { sendReferralEmail, sendOtpEmail } = require("../services/otpVerification");
+const { sendReferralEmail, sendOtpEmail, welcomeEmail } = require("../services/otpVerification");
 const jwt = require("jsonwebtoken");
 const redis = require("../lib/redis");
 
@@ -89,6 +89,9 @@ const verifyOTP = async (req, res) => {
         user.otpExpire = undefined;
         await user.save();
 
+        const successEmail =await welcomeEmail(user.email, "XUXU - Welcome", `Hi ${user.name}, \n\nWelcome to XUXU E-Commerce!`);
+        console.log("Email sent:", successEmail);
+        
         res.status(200).json({ message: "Email Verified. You can now login." });
     } catch (error) {
         res.status(500).json({ message: "Error Verifying User", error });
