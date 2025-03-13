@@ -24,7 +24,7 @@ app.use("/api/products",productRouter);
 app.use("/api/cart",cartRouter);
 app.use("/api/coupons",couponRouter);
 app.use("/api/payments",paymentRouter);
-app.use("api/analytics",analyticsRouter);
+app.use("/api/analytics",analyticsRouter);
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on port ${process.env.PORT}`);
     connectDB();
