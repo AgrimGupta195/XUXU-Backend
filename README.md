@@ -89,8 +89,8 @@ CLOUDINARY_SECRET=your_cloudinary_secret
 
 | Method | Endpoint                 | Description                     |
 |--------|--------------------------|---------------------------------|
-| POST   | `/api/products`          | Create a new product (protected) |
-| GET    | `/api/products`          | Get all products                |
+| POST   | `/api/products/`          | Create a new product (protected) |
+| GET    | `/api/products/`          | Get all products                |
 | GET    | `/api/products/:id`      | Get product by ID               |
 | PUT    | `/api/products/:id`      | Update a product (protected)    |
 | DELETE | `/api/products/:id`      | Delete a product (protected)    |
