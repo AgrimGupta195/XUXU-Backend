@@ -89,18 +89,13 @@ XUXU-Backend/
 ## 🛠️ Installation & Setup
 ```sh
 # Clone the repository
-git clone https://github.com/yourusername/xuxu-backend.git
-cd xuxu-backend
+git clone https://github.com/AgrimGupta195/XUXU-Backend.git
 
 # Install dependencies
 npm install
 
-# Configure environment variables
-cp .env.example .env
-nano .env   # Update variables
-
 # Start the server
-npm start
+node server.js
 ```
 
 ## 🔧 Environment Variables
