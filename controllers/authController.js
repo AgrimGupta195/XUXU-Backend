@@ -1,7 +1,7 @@
 const User = require("../models/userModel");
 const nodemailer = require("nodemailer");
 const bcrypt = require("bcryptjs");
-const {sendOtpEmail, welcomeEmail,} = require("../services/otpVerification");
+const {sendOtpEmail, welcomeEmail, loginEmail} = require("../services/otpVerification");
 const jwt = require("jsonwebtoken");
 const redis = require("../lib/redis");
 
