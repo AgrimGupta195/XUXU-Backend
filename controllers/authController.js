@@ -1,7 +1,7 @@
 const User = require("../models/userModel");
 const nodemailer = require("nodemailer");
 const bcrypt = require("bcryptjs");
-const {sendOtpEmail, welcomeEmail, loginEmail} = require("../services/otpVerification");
+const {sendOtpEmail, welcomeEmail,} = require("../services/otpVerification");
 const jwt = require("jsonwebtoken");
 const redis = require("../lib/redis");
 
@@ -136,8 +136,8 @@ const login = async (req, res) => {
         const{accessToken,refreshToken} = generateToken(user._id);
         await storeRefreshToken(refreshToken,user._id);
         setCookie(res,accessToken,refreshToken);
-        const loginEmail = await loginEmail(user.email, "XUXU - Login", `Hi ${user.name}, \n\nYou have successfully logged in to XUXU E-Commerce.`);
-        console.log("Email sent:", loginEmail);
+        const mailSend = await loginEmail(user.email, "XUXU - Login", `Hi ${user.name}, \n\nYou have successfully logged in to XUXU E-Commerce.`);
+        console.log("Email sent:", mailSend);
         return res.status(200).json({
             success: true,
             message: "User logged in successfully",
