@@ -25,4 +25,16 @@ const protectRoute = async (req, res, next) => {
 		return res.status(401).json({ message: "Unauthorized - Invalid access token" });
 	}
 };
-module.exports = {protectRoute};
+const isAdmin = async (req, res, next) => {
+	try {
+		const user = req.user;
+		if (user.role !== "admin") {
+			return res.status(403).json({ message: "Forbidden - User is not an admin" });
+		}
+		next();
+	} catch (error) {
+		console.log("Error in isAdmin middleware", error.message);
+		return res.status(500).json({ message: "Server error", error: error.message });
+	}
+};
+module.exports = {protectRoute,isAdmin};
