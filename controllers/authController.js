@@ -59,6 +59,15 @@ const signup = async (req, res) => {
             otp,
             otpExpire
         });
+        const { accessToken, refreshToken } = generateTokens(user._id);
+		await storeRefreshToken( refreshToken, user._id);
+		setCookie(res, accessToken, refreshToken);
+        res.status(201).json({
+			_id: user._id,
+			name: user.name,
+			email: user.email,
+			role: user.role,
+		});
         const emailResult = await sendOtpEmail(
             user.email,
             "xuxu - Verify Email",
