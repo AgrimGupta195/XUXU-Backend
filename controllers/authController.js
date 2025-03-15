@@ -20,7 +20,7 @@ const storeRefreshToken = async (token, userId) => {
 const setCookie = (res,accessToken,refreshToken) => {
     res.cookie("accessToken", accessToken, {
         httpOnly: true,
-        sameSite: " None",
+        sameSite: "None",
         secure: process.env.NODE_ENV === "production",
         maxAge: 15 * 60 * 1000
     });
