@@ -12,21 +12,27 @@ const getAllProducts = async (req, res) => {
 
 const getFeaturedProduct = async (req, res) => {
     try {
-        let featured_product = await redis.get("featured_product");
-        if(featured_product){
-            return res.json(JSON.parse(featured_product));
+        let featured_products = await redis.get("featured_products");
+
+        if (featured_products) {
+            return res.json(JSON.parse(featured_products));
         }
-        //lean return plain js object for good performance
-        featured_product = await Product.find({isFeatured:true}).lean();
-        if(!featured_product){
-            return res.status(404).json({message:"Featured Products not found"});
+
+        featured_products = await Product.find({ isFeatured: true }).lean();
+
+        if (!featured_products || featured_products.length === 0) {
+            return res.status(404).json({ message: "Featured Products not found" });
         }
-        await redis.set("featured_products",JSON.stringify(featured_product));
-        return res.json(featured_product);
+
+        await redis.set("featured_products", JSON.stringify(featured_products), "EX", 3600);
+
+        return res.json(featured_products);
     } catch (error) {
+        console.error("Error fetching featured products:", error);
         return res.status(500).json({ message: "Server error", error: error.message });
     }
-}
+};
+
 const createProduct = async(req,res)=>{
     try {
         const{name,description,image,price,category}=req.body;
