@@ -31,6 +31,8 @@ const isAdmin = async (req, res, next) => {
 		if (user.role !== "admin") {
 			return res.status(403).json({ message: "Forbidden - User is not an admin" });
 		}
+		console.log("User is an admin");
+		
 		next();
 	} catch (error) {
 		console.log("Error in isAdmin middleware", error.message);
