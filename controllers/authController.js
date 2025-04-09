@@ -20,13 +20,13 @@ const storeRefreshToken = async (token, userId) => {
 const setCookie = (res,accessToken,refreshToken) => {
     res.cookie("accessToken", accessToken, {
         httpOnly: true,
-        sameSite: "Strict",
+        sameSite: "None",
         secure: process.env.NODE_ENV === "production",
         maxAge: 15 * 60 * 1000
     });
     res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
-        sameSite: "Strict",
+        sameSite: "None",
         secure: process.env.NODE_ENV === "production",
         maxAge: 7 * 24 * 60 * 60 * 1000
     });
@@ -200,7 +200,7 @@ const refreshToken = async (req, res) => {
 		res.cookie("accessToken", accessToken, {
 			httpOnly: true,
 			secure: process.env.NODE_ENV === "production",
-			sameSite: "Strict",
+			sameSite: "None",
 			maxAge: 15 * 60 * 1000,
 		});
 
