@@ -21,9 +21,7 @@ app.use(express.json({ limit: "50mb" }));
 app.use(cookieParser());
 app.use(cors({
     origin:process.env.FRONTEND_URL,
-    credentials:true,
-    methods: ['GET', 'POST','PUT','PATCH', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    credentials:true
  }));
 app.use("/api/auth",authRouter);
 app.use("/api/products",productRouter);

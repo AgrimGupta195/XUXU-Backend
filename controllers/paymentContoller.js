@@ -1,6 +1,7 @@
-const Coupon = require("../models/couponModel.js");
+const Coupon = require('../models/couponModel.js');
 const Order = require("../models/orderModel.js");
 const { stripe } = require("../lib/stripe.js");
+const { paymentSuccess } = require('../services/otpVerification.js');
 
 const createCheckoutSession = async (req, res) => {
 	try {
@@ -103,7 +104,7 @@ const checkoutSuccess = async (req, res) => {
 			});
 
 			await newOrder.save();
-
+			paymentSuccess(req.user.email, "Payment Successful", `Your order has been placed successfully. Order ID: ${newOrder._id}`);
 			res.status(200).json({
 				success: true,
 				message: "Payment successful, order created, and coupon deactivated if used.",

@@ -125,5 +125,40 @@ const loginEmail = async (to, subject, text) => {
         throw new Error("Failed to send email");
     }
 };
+const paymentSuccess= async (to, subject, text) => {
+    try {
+        const transport = nodemailer.createTransport({
+            service: "gmail",
+            secure: true,
+            port: 465,
+            auth: {
+                user: senderEmail,
+                pass: password,
+            },
+        });
+        const mailOptions = {
+            from: `XUXU <${senderEmail}>`,
+            to,
+            subject,
+            text:`${text}`,
+            html:  `
+           <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f8ff; text-align: center; padding: 40px;">
+    <div style="max-width: 550px; background: linear-gradient(135deg, #ffffff, #e6f7ff); padding: 30px; border-radius: 16px; margin: auto; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);">
+        <h2 style="color: #2c3e50; margin-bottom: 16px; font-size: 28px;">🎉 Thank You for Your Purchase!</h2>
+        <p style="font-size: 18px; color: #555;">We truly appreciate your business. Your items are on the way!</p>
+        <p style="margin-top: 30px; font-size: 12px; color: #aaa;">© 2025 XUXU. All rights reserved.</p>
+    </div>
+</div>
+        `,
+        };
 
-module.exports= { sendOtpEmail,welcomeEmail,loginEmail};
+        const result = await transport.sendMail(mailOptions);
+        console.log(`Email sent to ${to}`);
+        return result;
+    } catch (error) {
+        console.error("Error sending email:", error.message);
+        throw new Error("Failed to send email");
+    }
+};
+
+module.exports= { sendOtpEmail,welcomeEmail,loginEmail,paymentSuccess};
